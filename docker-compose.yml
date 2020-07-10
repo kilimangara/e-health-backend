@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  ehealth_psql:
+    image: postgres:11
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    networks:
+      e_health_local:
+
+
+
+networks:
+  e_health_local:
+    external: true
