@@ -6,11 +6,18 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_HOST_AUTH_METHOD: trust
-    networks:
-      e_health_local:
+#    networks:
+#      e_health_local:
 
+  backend:
+    build:
+      context: .
+    depends_on:
+      - ehealth_psql
+    env_file:
+      - .env
 
-
-networks:
-  e_health_local:
-    external: true
+#
+#networks:
+#  e_health_local:
+#    external: true
