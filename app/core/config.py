@@ -87,5 +87,10 @@ class Settings(BaseSettings):
         env_file = '.env'
         env_file_encoding = 'utf-8'
 
+    @property
+    def db_url(self):
+        f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}/{self.POSTGRES_DB}"
+
+
 
 settings = Settings()
