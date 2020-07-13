@@ -1,5 +1,5 @@
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8
-RUN usermod -a -G sudo root
+WORKDIR /app/
 
 RUN pip install pipenv
 
@@ -9,10 +9,7 @@ RUN apt-get update -qq \
     libpq-dev \
     postgresql-client
 
-RUN mkdir /code
-WORKDIR /code
-COPY Pipfile /code/Pipfile
-COPY Pipfile.lock /code/Pipfile.lock
+COPY Pipfile /app/Pipfile
 RUN pipenv install
 
-COPY . /code
+COPY . /app
