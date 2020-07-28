@@ -1,12 +1,15 @@
+import datetime
 from typing import Optional
 
 from pydantic import BaseModel
 
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str
+class AuthorizationToken(BaseModel):
+    user_id: int
+    phone: str
+    sms_code: str
 
 
 class TokenPayload(BaseModel):
-    sub: Optional[int] = None
+    user_id: Optional[int] = None
+    exp: Optional[str] = None

@@ -7,7 +7,6 @@ verify_ssl = true
 
 [packages]
 fastapi = "==0.58.0"
-sqlalchemy = "==1.3.18"
 uvicorn = "*"
 alembic = "*"
 passlib = "*"
@@ -18,6 +17,7 @@ python-dotenv = "*"
 psycopg2-binary = "*"
 emails = "*"
 celery = "*"
+sqlalchemy = "*"
 
 [requires]
 python_version = "3.8"
