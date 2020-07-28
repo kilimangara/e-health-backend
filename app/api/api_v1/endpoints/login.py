@@ -4,11 +4,13 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app import crud
-from app.api.deps import get_current_user, get_current_user_for_auth
-from app.core.security import create_access_token, create_jwt_auth_token
+from app.api.deps import (get_current_for_token_refresh,
+                          get_current_user,
+                          get_current_user_for_auth)
+from app.core.security import create_jwt_auth_token, create_token
 from app.db.base import SessionLocal
 from app.db.models.user import STATUS_APPROVED, UserData
-from app.schemas.user import UserLogin, UserRegistrationIn
+from app.schemas.user import UserLogin, UserRefreshToken, UserRegistrationIn
 from app.utils.sms import send_sms
 
 router = APIRouter()
@@ -51,7 +53,20 @@ def login(request_data: UserLogin, db: Session = Depends(get_db)) -> Any:
     user = crud.user.update(db, db_obj=user, obj_in=user_update)
 
     return {
-        "access_token": create_access_token(user.id),
+        "access_token": create_token(user.id),
+        "refresh_token": create_token(user.id, "refresh_token", 3),
+        "token_type": "bearer",
+    }
+
+
+@router.post("/refresh_token")
+def refresh_token(request_data: UserRefreshToken, db: Session = Depends(get_db)) -> Any:
+    """Обновление токена."""
+    user, token_payload = get_current_for_token_refresh(db, request_data.refresh_token)
+
+    return {
+        "access_token": create_token(user.id),
+        "refresh_token": create_token(user.id, "refresh_token", 3),
         "token_type": "bearer",
     }
 

@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Generator
 
 from fastapi import Depends, HTTPException, status
@@ -9,7 +10,6 @@ from sqlalchemy.orm import Session
 from app import crud, schemas
 from app.core import security
 from app.core.config import settings
-from app.crud.crud_user import user as UserCrud
 from app.db import models
 from app.db.base import SessionLocal
 
@@ -33,12 +33,21 @@ def get_current_user(
         payload = jwt.decode(
             token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
         )
-        token_data = schemas.TokenPayload(**payload)
+        token_data = schemas.AccessToken(**payload)
     except (jwt.JWTError, ValidationError) as e:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=f"Could not validate credentials, {str(e)}",
         )
+    if token_data.type != "access_token":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Not valid type of token"
+        )
+    if datetime.fromtimestamp(token_data.exp) < datetime.utcnow():
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Try to refresh token"
+        )
+
     user = crud.user.get(db, id=token_data.user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -59,7 +68,39 @@ def get_current_user_for_auth(
             detail="Could not validate credentials",
         )
 
-    user = UserCrud.get_by_phone(db, token_data.phone)
+    user = crud.user.get_by_phone(db, token_data.phone)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+        )
+    else:
+        return user, token_data
+
+
+def get_current_for_token_refresh(
+    db: Session, token: str
+) -> (models.UserData, schemas.RefreshToken):
+    try:
+        payload = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
+        )
+        token_data = schemas.RefreshToken(**payload)
+    except (jwt.JWTError, ValidationError):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Could not validate credentials",
+        )
+    if token_data.type != "refresh_token":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Not valid type of token"
+        )
+    if datetime.fromtimestamp(token_data.exp) < datetime.utcnow():
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Could not validate credentials",
+        )
+
+    user = crud.user.get(db, id=token_data.user_id)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found"

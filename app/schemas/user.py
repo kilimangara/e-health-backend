@@ -32,8 +32,8 @@ class UserLogin(BaseModel):
     jwt_auth_token: str
 
 
-class UserRegistrationSuccess(BaseModel):
-    status: str
+class UserRefreshToken(BaseModel):
+    refresh_token: str
 
 
 # Properties to receive via API on update

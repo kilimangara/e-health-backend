@@ -9,23 +9,23 @@ from app.db.models.user import UserData
 ALGORITHM = "HS256"
 
 
-def create_access_token(user_id: int, expires_delta: timedelta = None) -> str:
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(
-            minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
-        )
-    to_encode = {"exp": expire, "user_id": str(user_id)}
+def create_token(
+    user_id: int, type: str = "access_token", time_multiplier: int = 1
+) -> str:
+    expire = datetime.utcnow() + timedelta(
+        minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES * time_multiplier
+    )
+    to_encode = {"exp": expire, "user_id": str(user_id), "type": type}
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
 
 def create_jwt_auth_token(user: UserData) -> (str, str):
     """Создание токена для последующей авторизации."""
+    # сделать в зависимости от окружения
     # sms_code = create_sms_code()
     sms_code = "123456"
-    data = {"user_id": user.id, "sms_code": sms_code, "phone": user.phone}
+    data = {"user_id": user.id, "sms_code": sms_code, "phone": user.phone, "type": "auth_token"}
     jwt_token = jwt.encode(data, settings.SECRET_KEY, algorithm=ALGORITHM)
 
     return jwt_token, sms_code

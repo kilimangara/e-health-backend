@@ -1,1 +1,1 @@
-from app.schemas.token import AuthorizationToken, TokenPayload
+from app.schemas.token import AccessToken, AuthorizationToken, RefreshToken

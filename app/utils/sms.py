@@ -1,9 +1,11 @@
 """Модуль работы с sms."""
-import requests
 from urllib.parse import urlencode
+
+import requests
 
 
 def send_sms(sms_code: str, phone_number: str):
+    # сделать отправку смс в зависимости от окружения
     params_dict = {
         "login": "kilimangara",
         "psw": "131196",
@@ -12,7 +14,7 @@ def send_sms(sms_code: str, phone_number: str):
         "charset": "utf-8",
         "bin": "0",
         "sender": "E-Health",
-        "fmt": 3 # ответ в формате json
+        "fmt": 3,  # ответ в формате json
     }
     params_dict = urlencode(params_dict)
     url_get = "https://smsc.ru/sys/send.php?" + params_dict
