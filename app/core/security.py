@@ -25,7 +25,12 @@ def create_jwt_auth_token(user: UserData) -> (str, str):
     # сделать в зависимости от окружения
     # sms_code = create_sms_code()
     sms_code = "123456"
-    data = {"user_id": user.id, "sms_code": sms_code, "phone": user.phone, "type": "auth_token"}
+    data = {
+        "user_id": user.id,
+        "sms_code": sms_code,
+        "phone": user.phone,
+        "type": "auth_token",
+    }
     jwt_token = jwt.encode(data, settings.SECRET_KEY, algorithm=ALGORITHM)
 
     return jwt_token, sms_code

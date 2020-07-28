@@ -4,9 +4,11 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app import crud
-from app.api.deps import (get_current_for_token_refresh,
-                          get_current_user,
-                          get_current_user_for_auth)
+from app.api.deps import (
+    get_current_for_token_refresh,
+    get_current_user,
+    get_current_user_for_auth,
+)
 from app.core.security import create_jwt_auth_token, create_token
 from app.db.base import SessionLocal
 from app.db.models.user import STATUS_APPROVED, UserData
