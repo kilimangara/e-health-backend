@@ -49,7 +49,9 @@ def get_current_user_for_auth(
     db: Session, token: str
 ) -> (models.UserData, schemas.AuthorizationToken):
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[security.ALGORITHM])
+        payload = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
+        )
         token_data = schemas.AuthorizationToken(**payload)
     except (jwt.JWTError, ValidationError):
         raise HTTPException(

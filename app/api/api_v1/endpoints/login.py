@@ -9,6 +9,7 @@ from app.core.security import create_access_token, create_jwt_auth_token
 from app.db.base import SessionLocal
 from app.db.models.user import STATUS_APPROVED, UserData
 from app.schemas.user import UserLogin, UserRegistrationIn
+from app.utils.sms import send_sms
 
 router = APIRouter()
 
@@ -32,7 +33,7 @@ def register_or_authenticate(
         user = crud.user.registrate(db, request_data)
     jwt_token, sms_code = create_jwt_auth_token(user)
 
-    # send_sms(phone, sms_code)
+    # send_sms(sms_code, request_data.phone)
     return {"result": {"jwt_token": jwt_token, "user_id": user.id}}
 
 

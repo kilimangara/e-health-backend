@@ -23,7 +23,7 @@ def create_access_token(user_id: int, expires_delta: timedelta = None) -> str:
 
 def create_jwt_auth_token(user: UserData) -> (str, str):
     """Создание токена для последующей авторизации."""
-    sms_code = create_sms_code()
+    # sms_code = create_sms_code()
     sms_code = "123456"
     data = {"user_id": user.id, "sms_code": sms_code, "phone": user.phone}
     jwt_token = jwt.encode(data, settings.SECRET_KEY, algorithm=ALGORITHM)
