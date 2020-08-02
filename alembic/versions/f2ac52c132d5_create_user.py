@@ -1,16 +1,17 @@
-"""First revision
+"""create user
 
-Revision ID: d4867f3a4c0a
-Revises:
-Create Date: 2020-07-24 13:53:32.978401
+Revision ID: f2ac52c132d5
+Revises: 
+Create Date: 2020-08-02 19:59:08.748737
 
 """
 from alembic import op
 import sqlalchemy as sa
 from datetime import datetime
 
+
 # revision identifiers, used by Alembic.
-revision = "d4867f3a4c0a"
+revision = 'f2ac52c132d5'
 down_revision = None
 branch_labels = None
 depends_on = None
