@@ -17,8 +17,18 @@ depends_on = None
 
 
 def upgrade():
-    pass
+    op.create_table(
+        "allergies",
+        sa.Column("id", sa.BIGINT(), nullable=False, primary_key=True),
+        sa.Column("user_id", sa.BIGINT(), nullable=False),
+        sa.Column("allergen", sa.String(), nullable=False),
+        sa.Column("reaction", sa.String(), nullable=False),
+        sa.ForeignKeyConstraint(["user_id"], ["user_data.id"], ),
+        sa.PrimaryKeyConstraint("id"),
+    )
+    op.create_index(op.f("ix_allergie_user_id"), "allergies", ["user_id"])
 
 
 def downgrade():
-    pass
+    op.drop_index(op.f("ix_allergie_user_id"), table_name="allergies")
+    op.drop_table("allergies")

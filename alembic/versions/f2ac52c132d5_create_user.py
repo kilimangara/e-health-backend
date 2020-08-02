@@ -42,5 +42,5 @@ def upgrade():
 def downgrade():
     op.drop_index(op.f("ix_phone"), table_name="user_data")
     op.drop_index(op.f("ix_user_id"), table_name="user_data")
-    op.drop_table("user")
+    op.drop_table("user_data")
     # ### end Alembic commands ###
