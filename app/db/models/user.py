@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Date
 
 from app.db.base import Base
 
@@ -17,5 +17,7 @@ class UserData(Base):
     status = Column(String, nullable=False)
     name = Column(String, nullable=True)
     last_name = Column(String, nullable=True)
-    middle_name = Column(String, nullable=True)
-    blood_type = Column(Integer, nullable=True)
+    blood_type = Column(String, nullable=True)
+    birth_date = Column(Date, nullable=True)
+    weight = Column(Integer, nullable=True)
+    height = Column(Integer, nullable=True)

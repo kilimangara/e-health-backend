@@ -8,6 +8,7 @@ from app.api.deps import (
     get_current_for_token_refresh,
     get_current_user,
     get_current_user_for_auth,
+    get_db
 )
 from app.core.security import create_jwt_auth_token, create_token
 from app.db.base import SessionLocal
@@ -16,15 +17,6 @@ from app.schemas.user import UserLogin, UserRefreshToken, UserRegistrationIn
 from app.utils.sms import send_sms
 
 router = APIRouter()
-
-
-def get_db():
-    """Получение коннекта к БД."""
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 @router.post("/login", tags=["login"])

@@ -7,7 +7,7 @@ Create Date: 2020-07-24 13:53:32.978401
 """
 from alembic import op
 import sqlalchemy as sa
-
+from datetime import datetime
 
 # revision identifiers, used by Alembic.
 revision = "d4867f3a4c0a"
@@ -22,11 +22,14 @@ def upgrade():
         "user_data",
         sa.Column("id", sa.BIGINT(), nullable=False, primary_key=True),
         sa.Column("phone", sa.String(), nullable=False, unique=True),
-        sa.Column("status", sa.String(), nullable=False, default='created'),
+        sa.Column("status", sa.String(), nullable=True, default='created'),
         sa.Column("name", sa.String(), nullable=True),
-        sa.Column("middle_name", sa.String(), nullable=True),
         sa.Column("last_name", sa.String(), nullable=True),
-        sa.Column("blood_type", sa.BIGINT(), nullable=True),
+        sa.Column("blood_type", sa.String(), nullable=True),
+        sa.Column("birth_date", sa.Date(), nullable=True),
+        sa.Column("weight", sa.Integer(), nullable=True),
+        sa.Column("height", sa.Integer(), nullable=True),
+        sa.Column("created_at", sa.DateTime(), default=datetime.now()),
         sa.PrimaryKeyConstraint("id"),
     )
 

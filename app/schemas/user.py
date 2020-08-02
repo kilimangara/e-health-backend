@@ -36,23 +36,10 @@ class UserRefreshToken(BaseModel):
     refresh_token: str
 
 
-# Properties to receive via API on update
-class UserUpdate(UserBase):
-    password: Optional[str] = None
-
-
-class UserInDBBase(UserBase):
-    id: Optional[int] = None
-
-    class Config:
-        orm_mode = True
-
-
-# Additional properties to return via API
-class User(UserInDBBase):
-    pass
-
-
-# Additional properties stored in DB
-class UserInDB(UserInDBBase):
-    hashed_password: str
+class UserUpdate(BaseModel):
+    name: str = None
+    last_name: str = None
+    blood_type: str = None
+    birth_date: str = None
+    weight: int = None
+    height: int = None
