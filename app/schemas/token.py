@@ -9,6 +9,7 @@ class AuthorizationToken(BaseModel):
     phone: str
     sms_code: str
     type: str
+    exp: Optional[float] = None
 
 
 class AccessToken(BaseModel):

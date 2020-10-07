@@ -23,7 +23,7 @@ def upgrade():
         sa.Column("user_id", sa.BIGINT(), nullable=False),
         sa.Column("allergen", sa.String(), nullable=False),
         sa.Column("reaction", sa.String(), nullable=False),
-        sa.ForeignKeyConstraint(["user_id"], ["user_data.id"], ),
+        sa.ForeignKeyConstraint(["user_id"], ["users.id"], ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(op.f("ix_allergie_user_id"), "allergies", ["user_id"])

@@ -9,8 +9,8 @@ STATUS_CREATED = "created"
 STATUS_APPROVED = "approved"
 
 
-class UserData(Base):
-    __tablename__ = "user_data"
+class Users(Base):
+    __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
     phone = Column(String, nullable=False, index=True)

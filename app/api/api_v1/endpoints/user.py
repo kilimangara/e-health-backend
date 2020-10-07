@@ -3,16 +3,16 @@ from sqlalchemy.orm import Session
 
 from app import crud
 from app.api.deps import get_current_user, get_db
-from app.db.models.user import UserData
+from app.db.models.user import Users
 from app.schemas.user import UserUpdate
 
 router = APIRouter()
 
 
 @router.post("/update")
-def update_user(
+async def update_user(
         request_data: UserUpdate,
-        current_user: UserData = Depends(get_current_user),
+        current_user: Users = Depends(get_current_user),
         db: Session = Depends(get_db)
 ):
     if current_user.name is None and request_data.name is None:
@@ -20,16 +20,16 @@ def update_user(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail='Name is required'
         )
-    crud.user.update(db, db_obj=current_user, obj_in=request_data)
+    await crud.user.update(db, db_obj=current_user, obj_in=request_data)
     return {"result": {"user_id": current_user.id,}}
 
 
 @router.post("/get")
-def get(current_user: UserData = Depends(get_current_user)):
+async def get(current_user: Users = Depends(get_current_user)):
     return {"result": current_user_to_dict(current_user)}
 
 
-def current_user_to_dict(user: UserData) -> dict:
+def current_user_to_dict(user: Users) -> dict:
     return {
         'name': user.name,
         'phone': user.phone,

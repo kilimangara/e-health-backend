@@ -26,14 +26,18 @@ def get_db() -> Generator:
         db.close()
 
 
-def get_current_user(
+async def get_current_user(
     db: Session = Depends(get_db), token: str = Depends(reusable_oauth2)
-) -> models.UserData:
+) -> models.Users:
     try:
         payload = jwt.decode(
             token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
         )
         token_data = schemas.AccessToken(**payload)
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Try to refresh token"
+        )
     except (jwt.JWTError, ValidationError) as e:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -43,32 +47,32 @@ def get_current_user(
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="Not valid type of token"
         )
-    if datetime.fromtimestamp(token_data.exp) < datetime.utcnow():
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Try to refresh token"
-        )
 
-    user = crud.user.get(db, id=token_data.user_id)
+    user = await crud.user.get(db, id=token_data.user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
 
-def get_current_user_for_auth(
+async def get_current_user_for_auth(
     db: Session, token: str
-) -> (models.UserData, schemas.AuthorizationToken):
+) -> (models.Users, schemas.AuthorizationToken):
     try:
         payload = jwt.decode(
             token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
         )
         token_data = schemas.AuthorizationToken(**payload)
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Token expired"
+        )
     except (jwt.JWTError, ValidationError):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
         )
 
-    user = crud.user.get_by_phone(db, token_data.phone)
+    user = await crud.user.get_by_phone(db, token_data.phone)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
@@ -77,9 +81,9 @@ def get_current_user_for_auth(
         return user, token_data
 
 
-def get_current_for_token_refresh(
+async def get_current_for_token_refresh(
     db: Session, token: str
-) -> (models.UserData, schemas.RefreshToken):
+) -> (models.Users, schemas.RefreshToken):
     try:
         payload = jwt.decode(
             token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
@@ -100,7 +104,7 @@ def get_current_for_token_refresh(
             detail="Could not validate credentials",
         )
 
-    user = crud.user.get(db, id=token_data.user_id)
+    user = await crud.user.get(db, id=token_data.user_id)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found"

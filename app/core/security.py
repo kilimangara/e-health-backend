@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from jose import jwt
 
 from app.core.config import settings
-from app.db.models.user import UserData
+from app.db.models.user import Users
 
 ALGORITHM = "HS256"
 
@@ -20,12 +20,14 @@ def create_token(
     return encoded_jwt
 
 
-def create_jwt_auth_token(user: UserData) -> (str, str):
+def create_jwt_auth_token(user: Users) -> (str, str):
     """Создание токена для последующей авторизации."""
     # сделать в зависимости от окружения
     # sms_code = create_sms_code()
     sms_code = "123456"
+    expire = datetime.utcnow() + timedelta(minutes=settings.SMS_TOKEN_EXPIRE_MINUTES)
     data = {
+        "exp": expire,
         "user_id": user.id,
         "sms_code": sms_code,
         "phone": user.phone,
