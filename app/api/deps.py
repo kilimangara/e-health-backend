@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Generator, List
+from typing import Generator
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 from app import crud, schemas
 from app.core import security
 from app.core.config import settings
-from app.db import models
+from app.db.models.user import UsersDBModel
 from app.db.base import SessionLocal
 
 reusable_oauth2 = OAuth2PasswordBearer(
@@ -28,7 +28,7 @@ def get_db() -> Generator:
 
 async def get_current_user(
     db: Session = Depends(get_db), token: str = Depends(reusable_oauth2)
-) -> models.Users:
+) -> UsersDBModel:
     try:
         payload = jwt.decode(
             token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
@@ -56,7 +56,7 @@ async def get_current_user(
 
 async def get_current_user_for_auth(
     db: Session, token: str
-) -> (models.Users, schemas.AuthorizationToken):
+) -> (UsersDBModel, schemas.AuthorizationToken):
     try:
         payload = jwt.decode(
             token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
@@ -83,7 +83,7 @@ async def get_current_user_for_auth(
 
 async def get_current_for_token_refresh(
     db: Session, token: str
-) -> (models.Users, schemas.RefreshToken):
+) -> (UsersDBModel, schemas.RefreshToken):
     try:
         payload = jwt.decode(
             token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]

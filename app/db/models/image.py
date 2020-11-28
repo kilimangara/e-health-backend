@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String
 from app.db.base import Base
 
 
-class ImageBlob(Base):
+class ImageBlobDBModel(Base):
     __tablename__ = "imageBlob"
 
     id = Column(Integer, primary_key=True)

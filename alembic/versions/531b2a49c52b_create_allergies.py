@@ -5,13 +5,13 @@ Revises: f2ac52c132d5
 Create Date: 2020-08-02 19:59:21.093667
 
 """
-from alembic import op
 import sqlalchemy as sa
 
+from alembic import op
 
 # revision identifiers, used by Alembic.
-revision = '531b2a49c52b'
-down_revision = 'f2ac52c132d5'
+revision = "531b2a49c52b"
+down_revision = "f2ac52c132d5"
 branch_labels = None
 depends_on = None
 
@@ -23,7 +23,10 @@ def upgrade():
         sa.Column("user_id", sa.BIGINT(), nullable=False),
         sa.Column("allergen", sa.String(), nullable=False),
         sa.Column("reaction", sa.String(), nullable=False),
-        sa.ForeignKeyConstraint(["user_id"], ["users.id"], ),
+        sa.ForeignKeyConstraint(
+            ["user_id"],
+            ["users.id"],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(op.f("ix_allergie_user_id"), "allergies", ["user_id"])

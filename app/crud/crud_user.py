@@ -3,17 +3,17 @@ from typing import Any, Dict, Optional, Union
 from sqlalchemy.orm import Session
 
 from app.crud.base import CRUDBase
-from app.db.models import Users
-from app.schemas.user import UserRegistrationIn, UserUpdate
+from app.db.models.user import UsersDBModel
+from app.schemas.user import UserCreateModel, UserUpdateModel
 
 
-class CRUDUser(CRUDBase[Users, UserRegistrationIn, UserUpdate]):
-    async def get_by_phone(self, db: Session, phone: str) -> Optional[Users]:
-        return db.query(Users).filter(Users.phone == phone).first()
+class CRUDUser(CRUDBase[UsersDBModel, UserCreateModel, UserUpdateModel]):
+    async def get_by_phone(self, db: Session, phone: str) -> Optional[UsersDBModel]:
+        return db.query(UsersDBModel).filter(UsersDBModel.phone == phone).first()
 
-    async def registrate(self, db: Session, obj_in: UserRegistrationIn) -> Users:
+    async def registrate(self, db: Session, obj_in: UserCreateModel) -> UsersDBModel:
         """Создание пользователя по номеру телефона."""
-        db_obj = Users(phone=obj_in.phone, status="created")
+        db_obj = UsersDBModel(phone=obj_in.phone, status="created")
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
@@ -23,8 +23,8 @@ class CRUDUser(CRUDBase[Users, UserRegistrationIn, UserUpdate]):
         self,
         db: Session,
         *,
-        db_obj: Users,
-        obj_in: Union[UserUpdate, Dict[str, Any]]
+        db_obj: UsersDBModel,
+        obj_in: Union[UserUpdateModel, Dict[str, Any]]
     ):
         if isinstance(obj_in, dict):
             update_data = obj_in
@@ -33,4 +33,4 @@ class CRUDUser(CRUDBase[Users, UserRegistrationIn, UserUpdate]):
         return await super().update(db, db_obj=db_obj, obj_in=update_data)
 
 
-user = CRUDUser(Users)
+user = CRUDUser(UsersDBModel)

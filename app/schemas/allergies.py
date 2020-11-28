@@ -3,14 +3,13 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-# Shared properties
-class AllergiaBase(BaseModel):
-    id: Optional[int] = None
-    user_id: Optional[int] = None
+class AllergyCreateModel(BaseModel):
     allergen: Optional[str] = None
     reaction: Optional[str] = None
 
 
-class AllergiaCreate(BaseModel):
+class AllergyUpdateModel(BaseModel):
+    id: Optional[int] = None
+    user_id: Optional[int] = None
     allergen: Optional[str] = None
     reaction: Optional[str] = None

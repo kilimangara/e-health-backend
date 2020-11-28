@@ -1,15 +1,23 @@
+from typing import List
+
 from sqlalchemy.orm import Session
 
 from app.crud.base import CRUDBase
-from app.db.models import ImageBlob
-from app.schemas.images import CreateUrls
-from typing import List
+from app.db.models.image import ImageBlobDBModel
+from app.schemas.image import ImageDataCreateModel, ImageDataUpdateModel
 
-class CRUDImages(CRUDBase[ImageBlob, CreateUrls, ImageBlob]):
-    async def get_by_analysis_id(self, db: Session, analysis_id: int) -> List[ImageBlob]:
-        return db.query(ImageBlob).filter(ImageBlob.analysis_id == analysis_id)
 
-    async def add_list(self, db: Session, data_in: List[ImageBlob]):
+class CRUDImages(
+    CRUDBase[ImageBlobDBModel, ImageDataCreateModel, ImageDataUpdateModel]
+):
+    async def get_by_analysis_id(
+        self, db: Session, analysis_id: int
+    ) -> List[ImageBlobDBModel]:
+        return db.query(ImageBlobDBModel).filter(
+            ImageBlobDBModel.analysis_id == analysis_id
+        )
+
+    async def add_list(self, db: Session, data_in: List[ImageBlobDBModel]):
         db.add_all(data_in)
         db.commit()
         for obj in data_in:
@@ -17,4 +25,4 @@ class CRUDImages(CRUDBase[ImageBlob, CreateUrls, ImageBlob]):
         return data_in
 
 
-images = CRUDImages(ImageBlob)
+images = CRUDImages(ImageBlobDBModel)

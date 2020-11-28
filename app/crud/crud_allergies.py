@@ -1,15 +1,17 @@
-from typing import Optional, List, Any
+from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
 from app.crud.base import CRUDBase
-from app.db.models import Allergies
-from app.schemas.allergies import AllergiaBase, AllergiaCreate
+from app.db.models.allergies import AllergyDBModel
+from app.schemas.allergies import AllergyCreateModel, AllergyUpdateModel
 
 
-class CRUDAllergia(CRUDBase[AllergiaBase, AllergiaCreate, AllergiaBase]):
-    async def get_by_user_id(self, db: Session, *, user_id: int) -> Optional[List[AllergiaBase]]:
-        return db.query(Allergies).filter(Allergies.user_id == user_id)
+class CRUDAllergia(CRUDBase[AllergyDBModel, AllergyCreateModel, AllergyUpdateModel]):
+    async def get_by_user_id(
+        self, db: Session, *, user_id: int
+    ) -> Optional[List[AllergyDBModel]]:
+        return db.query(AllergyDBModel).filter(AllergyDBModel.user_id == user_id)
 
 
-allergia = CRUDAllergia(Allergies)
+allergy = CRUDAllergia(AllergyDBModel)
