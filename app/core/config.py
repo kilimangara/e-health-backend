@@ -66,5 +66,12 @@ class Settings(BaseSettings):
     SMS_SENDER_LOGIN: str = "kilimangara"
     SMS_SENDER_PASSWORD: str = "131196"
 
+    # AMAZON_S3
+    AMAZON_SERVICE_NAME: str = "s3"
+    AMAZON_REGION_NAME: str = "eu-north-1"
+    AMAZON_ACCESS_KEY_ID: str = "AKIAV44LYBIXFGPPXI6O"
+    AMAZON_SECRET_ACCESS_KEY: str = "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"
+    AMAZON_BUCKET_NAME: str = "emma-e-health-test"
+
 
 settings = Settings()

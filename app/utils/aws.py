@@ -2,24 +2,19 @@ from typing import Dict, List
 
 import boto3
 
-from app.db.models.image import ImageBlob
+from app.db.models.image import ImageBlobDBModel
+from app.core.config import settings
 
-
-def generate_upload_urls(data: List[ImageBlob]) -> Dict:
+def generate_upload_urls(data: List[ImageBlobDBModel]) -> Dict:
     result = {}
 
-    s3: boto3.client = boto3.client(
-        service_name="s3",
-        region_name="eu-north-1",
-        aws_access_key_id="AKIAV44LYBIXFGPPXI6O",
-        aws_secret_access_key="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",
-    )
+    client = get_client()
 
     for image in data:
-        url = s3.generate_presigned_url(
+        url = client.generate_presigned_url(
             ClientMethod="put_object",
             Params={
-                "Bucket": "emma-e-health-test",
+                "Bucket": settings.AMAZON_BUCKET_NAME,
                 "Key": image.filename,
                 "ContentMD5": image.check_sum,
             },
@@ -28,3 +23,12 @@ def generate_upload_urls(data: List[ImageBlob]) -> Dict:
         result[image.id] = url
 
     return result
+
+def get_client() -> boto3.client:
+    """Получение клиента для амазона."""
+    return boto3.client(
+        service_name=settings.AMAZON_SERVICE_NAME,
+        region_name=settings.AMAZON_REGION_NAME,
+        aws_access_key_id=settings.AMAZON_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AMAZON_SECRET_ACCESS_KEY,
+    )
