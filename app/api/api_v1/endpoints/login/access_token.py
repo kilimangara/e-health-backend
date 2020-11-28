@@ -17,7 +17,7 @@ class UserLogin(BaseModel):
     jwt_auth_token: str
 
 
-@router.post("/login/access-token", tags=["login"])
+@router.post("/accessToken", tags=["login"])
 async def login(request_data: UserLogin, db: Session = Depends(get_db)) -> Any:
     """Авторизация."""
     user, token_payload = await get_current_user_for_auth(

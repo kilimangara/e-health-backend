@@ -16,7 +16,7 @@ class UserRefreshToken(BaseModel):
     refresh_token: str
 
 
-@router.post("/refresh_token")
+@router.post("/refreshToken")
 async def refresh_token(
     request_data: UserRefreshToken, db: Session = Depends(get_db)
 ) -> Any:
