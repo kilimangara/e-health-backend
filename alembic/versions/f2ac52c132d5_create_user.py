@@ -22,7 +22,7 @@ def upgrade():
     op.create_table(
         "users",
         sa.Column("id", sa.BIGINT(), nullable=False, primary_key=True),
-        sa.Column("phone", sa.String(), nullable=False, unique=True),
+        sa.Column("phone", sa.String(), nullable=True, unique=True),
         sa.Column("status", sa.String(), nullable=True, default='created'),
         sa.Column("name", sa.String(), nullable=True),
         sa.Column("last_name", sa.String(), nullable=True),

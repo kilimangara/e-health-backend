@@ -1,2 +1,3 @@
 from .crud_user import user
 from .crud_allergies import allergia
+from .crud_images import images

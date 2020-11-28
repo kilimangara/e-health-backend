@@ -11,7 +11,6 @@ from app.api.deps import (
     get_db
 )
 from app.core.security import create_jwt_auth_token, create_token
-from app.db.base import SessionLocal
 from app.db.models.user import STATUS_APPROVED, Users
 from app.schemas.user import UserLogin, UserRefreshToken, UserRegistrationIn
 from app.utils.sms import send_sms
