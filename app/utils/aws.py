@@ -2,8 +2,9 @@ from typing import Dict, List
 
 import boto3
 
-from app.db.models.image import ImageBlobDBModel
 from app.core.config import settings
+from app.db.models.image import ImageBlobDBModel
+
 
 def generate_upload_urls(data: List[ImageBlobDBModel]) -> Dict:
     result = {}
@@ -24,6 +25,7 @@ def generate_upload_urls(data: List[ImageBlobDBModel]) -> Dict:
         result[image.id] = url
 
     return result
+
 
 def get_client() -> boto3.client:
     """Получение клиента для амазона."""

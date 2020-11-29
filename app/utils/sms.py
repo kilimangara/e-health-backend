@@ -1,8 +1,9 @@
 """Модуль работы с sms."""
 from urllib.parse import urlencode
-from app.core.config import settings
 
 import requests
+
+from app.core.config import settings
 
 
 def send_sms(sms_code: str, phone_number: str):
