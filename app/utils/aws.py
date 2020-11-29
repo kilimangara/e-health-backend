@@ -17,6 +17,7 @@ def generate_upload_urls(data: List[ImageBlobDBModel]) -> Dict:
                 "Bucket": settings.AMAZON_BUCKET_NAME,
                 "Key": image.filename,
                 "ContentMD5": image.check_sum,
+                "ContentLength": image.byte_size,
             },
             ExpiresIn=3600,
         )
