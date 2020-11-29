@@ -31,7 +31,7 @@ def upgrade():
         sa.Column("birth_date", sa.Date(), nullable=True),
         sa.Column("weight", sa.Integer(), nullable=True),
         sa.Column("height", sa.Integer(), nullable=True),
-        sa.Column("created_at", sa.DateTime(), default=datetime.now()),
+        sa.Column("created_at", sa.DateTime(), default=datetime.now(), nullable=False),
         sa.PrimaryKeyConstraint("id"),
     )
 

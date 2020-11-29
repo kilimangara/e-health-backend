@@ -1,6 +1,7 @@
 from typing import List
 
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 
 from app.crud.base import CRUDBase
 from app.db.models.image import ImageBlobDBModel
@@ -24,5 +25,11 @@ class CRUDImages(
             db.refresh(obj)
         return data_in
 
+    async def link_to_analysis(self, db: Session, analysis_id: int, keys: List[int]):
+        db.execute(
+            text("UPDATE image_blob SET analysis_id=:an_id WHERE id IN :keys;"),
+            {"an_id": analysis_id, "keys": tuple(keys)}
+        )
+        db.commit()
 
 images = CRUDImages(ImageBlobDBModel)

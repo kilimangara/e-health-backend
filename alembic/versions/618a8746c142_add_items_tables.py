@@ -23,14 +23,16 @@ def upgrade():
         "analysis",
         sa.Column("id", sa.BIGINT(), nullable=False, primary_key=True),
         sa.Column("user_id", sa.BIGINT(), sa.ForeignKey("users.id"), nullable=False),
-        sa.Column("created_at", sa.DateTime(), default=datetime.now()),
-        sa.Column("category_id", sa.BIGINT()),
+        sa.Column("created_at", sa.DateTime(), default=datetime.now(), nullable=False),
+        sa.Column("category_id", sa.BIGINT(), nullable=False),
+        sa.Column("comment", sa.String(), nullable=True)
     )
 
     op.create_index(op.f("ix_analysis_user_id"), "analysis", ["user_id"])
+    op.create_index(op.f("ix_analysis_category_id"), "analysis", ["category_id"])
 
     op.create_table(
-        "imageBlob",
+        "image_blob",
         sa.Column("id", sa.BIGINT(), nullable=False, primary_key=True),
         sa.Column("filename", sa.String(), nullable=False),
         sa.Column("content_type", sa.String(), nullable=False),
@@ -40,15 +42,15 @@ def upgrade():
             "analysis_id", sa.BIGINT(), sa.ForeignKey("analysis.id"), default=None
         ),
         sa.Column("position", sa.BIGINT(), nullable=False),
-        sa.Column("created_at", sa.DateTime(), default=datetime.now()),
+        sa.Column("created_at", sa.DateTime(), default=datetime.now(), nullable=False),
     )
 
-    op.create_index(op.f("ix_image"), "imageBlob", ["analysis_id"])
+    op.create_index(op.f("ix_image"), "image_blob", ["analysis_id"])
 
 
 def downgrade():
     op.drop_index(op.f("ix_analysis_user_id"), table_name="analysis")
     op.drop_table("analysis")
 
-    op.drop_index(op.f("ix_image"), table_name="imageBlob")
-    op.drop_table("imageBlob")
+    op.drop_index(op.f("ix_image"), table_name="image_blob")
+    op.drop_table("image_blob")

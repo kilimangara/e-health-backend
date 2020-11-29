@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Date, Integer, String
+from sqlalchemy import Column, Date, Integer, String, DateTime
 
 from app.db.base import Base
+from datetime import datetime
 
 STATUS_CREATED = "created"
 STATUS_APPROVED = "approved"
@@ -18,6 +19,7 @@ class UsersDBModel(Base):
     birth_date = Column(Date, nullable=True)
     weight = Column(Integer, nullable=True)
     height = Column(Integer, nullable=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.now())
 
     def to_dict(self):
         """Преобразование объекта к словарю."""
