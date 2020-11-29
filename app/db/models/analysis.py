@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, String, DateTime
+from datetime import datetime
+
+from sqlalchemy import Column, DateTime, Integer, String
 
 from app.db.base import Base
-from datetime import datetime
 
 
 class AnalysisDBModel(Base):

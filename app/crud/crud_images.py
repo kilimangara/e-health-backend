@@ -1,7 +1,8 @@
 from typing import List
 
-from sqlalchemy.orm import Session
 from sqlalchemy import text
+from sqlalchemy.engine import ResultProxy
+from sqlalchemy.orm import Session
 
 from app.crud.base import CRUDBase
 from app.db.models.image import ImageBlobDBModel
@@ -25,11 +26,34 @@ class CRUDImages(
             db.refresh(obj)
         return data_in
 
+    async def check_count_by_keys(self, db: Session, user_id: int, keys: List[int]):
+        result: ResultProxy = db.execute(
+            text(
+                """
+                SELECT count(*)
+                FROM image_blob
+                WHERE user_id=:user_id
+                  AND id IN :keys
+                  AND analysis_id IS NULL;
+            """
+            ),
+            {"user_id": user_id, "keys": tuple(keys)},
+        )
+        return result.fetchone()[0] == len(keys)
+
     async def link_to_analysis(self, db: Session, analysis_id: int, keys: List[int]):
         db.execute(
-            text("UPDATE image_blob SET analysis_id=:an_id WHERE id IN :keys;"),
-            {"an_id": analysis_id, "keys": tuple(keys)}
+            text(
+                """
+                UPDATE image_blob
+                SET analysis_id=:an_id
+                WHERE id IN :keys
+                  AND analysis_id IS NULL;
+            """
+            ),
+            {"an_id": analysis_id, "keys": tuple(keys)},
         )
         db.commit()
+
 
 images = CRUDImages(ImageBlobDBModel)

@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Date, Integer, String, DateTime
+from datetime import datetime
+
+from sqlalchemy import Column, Date, DateTime, Integer, String
 
 from app.db.base import Base
-from datetime import datetime
 
 STATUS_CREATED = "created"
 STATUS_APPROVED = "approved"

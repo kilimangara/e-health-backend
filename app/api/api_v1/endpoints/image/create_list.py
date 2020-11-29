@@ -33,6 +33,7 @@ def process_request(user_id: int, req: CreateUrlsModel) -> List[ImageBlobDBModel
         result.append(
             ImageBlobDBModel(
                 filename=f"{user_id}/{str(uuid4())}",
+                user_id=user_id,
                 check_sum=el.check_sum,
                 content_type=el.content_type,
                 byte_size=el.byte_size,

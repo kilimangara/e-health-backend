@@ -1,10 +1,10 @@
 from fastapi import APIRouter
 
 from app.api.api_v1.endpoints.allergie import allergie_router
+from app.api.api_v1.endpoints.analysis import analysis_router
 from app.api.api_v1.endpoints.image import images_router
 from app.api.api_v1.endpoints.login import login_router
 from app.api.api_v1.endpoints.user import user_router
-from app.api.api_v1.endpoints.analysis import analysis_router
 
 api_router = APIRouter()
 api_router.include_router(login_router, tags=["login"], prefix="/login")

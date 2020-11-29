@@ -1,5 +1,7 @@
-from sqlalchemy import Column, Integer, String, DateTime
 from datetime import datetime
+
+from sqlalchemy import Column, DateTime, Integer, String
+
 from app.db.base import Base
 
 
@@ -7,6 +9,7 @@ class ImageBlobDBModel(Base):
     __tablename__ = "image_blob"
 
     id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, index=True)
     analysis_id = Column(Integer, index=True)
     filename = Column(String, nullable=False)
     check_sum = Column(String, nullable=False)
