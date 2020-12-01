@@ -23,7 +23,7 @@ def upgrade():
         sa.Column("user_id", sa.BIGINT(), nullable=False),
         sa.Column("allergen", sa.String(), nullable=False),
         sa.Column("reaction", sa.String(), nullable=False),
-        sa.Column("created_at", sa.DateTime(), default=datetime.now(), nullable=False),
+        sa.Column("created_at", sa.DateTime(), server_default=sa.text('NOW()'), nullable=False),
         sa.ForeignKeyConstraint(
             ["user_id"],
             ["users.id"],

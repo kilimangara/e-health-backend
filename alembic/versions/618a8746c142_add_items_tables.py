@@ -23,7 +23,7 @@ def upgrade():
         "analysis",
         sa.Column("id", sa.BIGINT(), nullable=False, primary_key=True),
         sa.Column("user_id", sa.BIGINT(), sa.ForeignKey("users.id"), nullable=False),
-        sa.Column("created_at", sa.DateTime(), default=datetime.now(), nullable=False),
+        sa.Column("created_at", sa.DateTime(), server_default=sa.text('NOW()'), nullable=False),
         sa.Column("category_id", sa.BIGINT(), nullable=False),
         sa.Column("comment", sa.String(), nullable=True),
     )
@@ -43,7 +43,7 @@ def upgrade():
             "analysis_id", sa.BIGINT(), sa.ForeignKey("analysis.id"), default=None
         ),
         sa.Column("position", sa.BIGINT(), nullable=False),
-        sa.Column("created_at", sa.DateTime(), default=datetime.now(), nullable=False),
+        sa.Column("created_at", sa.DateTime(), server_default=sa.text('NOW()'), nullable=False),
     )
 
     op.create_index(op.f("ix_image_analysis_id"), "image_blob", ["analysis_id"])
