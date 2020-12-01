@@ -1,6 +1,7 @@
 from typing import List, Optional
 
-from pydantic import BaseModel
+from fastapi import HTTPException, status
+from pydantic import BaseModel, validator
 
 
 class AnalysisCreateRequestModel(BaseModel):
@@ -20,3 +21,17 @@ class AnalysisCreateModel(BaseModel):
     category_id: int
     comment: Optional[str]
     user_id: int
+
+
+class AnalysisGetModel(BaseModel):
+    category_id: int
+    page: int = 1
+    limit: int = 20
+
+    # @validator('category_id', 'page', 'limit')
+    # def validate_fields(self, value):
+    #     if value < 1:
+    #         raise HTTPException(
+    #             status_code=status.HTTP_400_BAD_REQUEST, detail="phone_not_valid"
+    #         )
+    #     return value

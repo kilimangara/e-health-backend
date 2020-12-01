@@ -27,6 +27,21 @@ def generate_upload_urls(data: List[ImageBlobDBModel]) -> Dict:
     return result
 
 
+def generate_download_url(filename, content_type):
+    client = get_client()
+
+    return client.generate_presigned_url(
+        ClientMethod="get_object",
+        Params={
+            "Bucket": settings.AMAZON_BUCKET_NAME,
+            "Key": filename,
+            "ResponseContentType": content_type,
+        },
+        ExpiresIn=3600,
+        HttpMethod="GET",
+    )
+
+
 def get_client() -> boto3.client:
     """Получение клиента для амазона."""
     return boto3.client(
