@@ -19,12 +19,34 @@ class CRUDImages(
             ImageBlobDBModel.analysis_id == analysis_id
         )
 
+    async def get_user_avatar(self, db: Session, user_id: int) -> ImageBlobDBModel:
+        return (
+            db.query(ImageBlobDBModel)
+            .filter(
+                ImageBlobDBModel.user_id == user_id
+                and ImageBlobDBModel.is_avatar == True
+            )
+            .first()
+        )
+
     async def add_list(self, db: Session, data_in: List[ImageBlobDBModel]):
         db.add_all(data_in)
         db.commit()
         for obj in data_in:
             db.refresh(obj)
         return data_in
+
+    async def approve_new_avatar(self, db: Session, user_id: int, image_id: int):
+        db.execute(
+            text(
+                """
+                UPDATE image_blob SET is_avatar = FALSE AND analysis_id IS NULL WHERE user_id=:user_id; 
+                UPDATE image_blob SET is_avatar = TRUE WHERE id=:image_id;
+            """
+            ),
+            {"image_id": image_id, "user_id": user_id},
+        )
+        db.commit()
 
     async def check_count_by_keys(self, db: Session, user_id: int, keys: List[int]):
         result: ResultProxy = db.execute(

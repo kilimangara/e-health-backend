@@ -29,10 +29,6 @@ async def login(request_data: UserLogin, db: Session = Depends(get_db)) -> Any:
             detail="Could not validate credentials",
         )
 
-    if user.status != STATUS_APPROVED:
-        user_update = {"status": STATUS_APPROVED}
-        user = await crud.user.update(db, db_obj=user, obj_in=user_update)
-
     return {
         "access_token": create_token(user.id),
         "refresh_token": create_token(user.id, "refresh_token", 3),

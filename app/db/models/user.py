@@ -20,11 +20,13 @@ class UsersDBModel(Base):
     birth_date = Column(Date, nullable=True)
     weight = Column(Integer, nullable=True)
     height = Column(Integer, nullable=True)
+    parent_user_id = Column(Integer, nullable=True)
     created_at = Column(DateTime, nullable=False, default=datetime.now())
 
     def to_dict(self):
         """Преобразование объекта к словарю."""
         return {
+            "id": self.id,
             "name": self.name,
             "phone": self.phone,
             "blood_type": self.blood_type,

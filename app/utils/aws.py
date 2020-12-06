@@ -28,6 +28,9 @@ def generate_upload_urls(data: List[ImageBlobDBModel]) -> Dict:
 
 
 def generate_download_url(filename, content_type):
+    if filename is None or content_type is None:
+        return None
+
     client = get_client()
 
     return client.generate_presigned_url(

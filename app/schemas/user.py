@@ -30,3 +30,8 @@ class UserUpdateModel(BaseModel):
     birth_date: str = None
     weight: int = None
     height: int = None
+
+
+class ChangeUserModel(BaseModel):
+    """Схема изменения пользователя."""
+    id: int

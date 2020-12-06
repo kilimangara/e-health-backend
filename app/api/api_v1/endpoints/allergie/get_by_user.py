@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app import crud
-from app.api.deps import get_current_user, get_db
+from app.api.deps import get_current_user_is_approved, get_db
 from app.db.models.user import UsersDBModel
 
 router = APIRouter()
@@ -10,7 +10,7 @@ router = APIRouter()
 
 @router.post("/getByUser")
 async def getByUser(
-    current_user: UsersDBModel = Depends(get_current_user),
+    current_user: UsersDBModel = Depends(get_current_user_is_approved),
     db: Session = Depends(get_db),
 ):
     allergies = await crud.allergy.get_by_user_id(db, user_id=current_user.id)

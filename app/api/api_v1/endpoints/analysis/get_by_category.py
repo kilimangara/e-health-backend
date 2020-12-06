@@ -1,9 +1,9 @@
 from typing import Dict, List
 
-from fastapi import APIRouter, Depends, logger
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_current_user, get_db
+from app.api.deps import get_current_user_is_approved, get_db
 from app.crud import analysis
 from app.db.models.user import UsersDBModel
 from app.schemas.analysis import AnalysisGetModel
@@ -15,7 +15,7 @@ router = APIRouter()
 @router.post("/get")
 async def get(
     request_data: AnalysisGetModel,
-    current_user: UsersDBModel = Depends(get_current_user),
+    current_user: UsersDBModel = Depends(get_current_user_is_approved),
     db: Session = Depends(get_db),
 ):
     analysis_data = await analysis.get_by_user_with_images(

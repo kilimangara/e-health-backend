@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, Integer, String
+from sqlalchemy import Boolean, Column, DateTime, Integer, String
 
 from app.db.base import Base
 
@@ -16,4 +16,5 @@ class ImageBlobDBModel(Base):
     content_type = Column(String, nullable=True)
     byte_size = Column(Integer, nullable=False)
     position = Column(Integer, nullable=False)
+    is_avatar = Column(Boolean, nullable=False, default=False)
     created_at = Column(DateTime, nullable=False, default=datetime.now())

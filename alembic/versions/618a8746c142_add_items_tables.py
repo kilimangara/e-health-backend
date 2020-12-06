@@ -42,6 +42,7 @@ def upgrade():
         sa.Column(
             "analysis_id", sa.BIGINT(), sa.ForeignKey("analysis.id"), default=None
         ),
+        sa.Column("is_avatar", sa.Boolean(), server_default=sa.text("false")),
         sa.Column("position", sa.BIGINT(), nullable=False),
         sa.Column("created_at", sa.DateTime(), server_default=sa.text('NOW()'), nullable=False),
     )

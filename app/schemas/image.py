@@ -19,3 +19,7 @@ CreateUrlsModel.update_forward_refs()
 
 class ImageDataUpdateModel(BaseModel):
     analysis_id: int
+
+
+class ApproveAvatarModel(BaseModel):
+    image_id: int

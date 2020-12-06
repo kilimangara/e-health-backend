@@ -11,7 +11,7 @@ from app import crud, schemas
 from app.core import security
 from app.core.config import settings
 from app.db.base import SessionLocal
-from app.db.models.user import UsersDBModel
+from app.db.models.user import UsersDBModel, STATUS_APPROVED, STATUS_CREATED
 
 reusable_oauth2 = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_STR}/login/access-token"
@@ -25,9 +25,14 @@ def get_db() -> Generator:
     finally:
         db.close()
 
+async def get_current_user_is_approved(db: Session = Depends(get_db), token: str = Depends(reusable_oauth2)) -> UsersDBModel:
+    return await get_current_user(db, token, user_statuses=(STATUS_APPROVED, ))
+
+async def get_current_user_is_created(db: Session = Depends(get_db), token: str = Depends(reusable_oauth2)) -> UsersDBModel:
+    return await get_current_user(db, token, user_statuses=(STATUS_CREATED, ))
 
 async def get_current_user(
-    db: Session = Depends(get_db), token: str = Depends(reusable_oauth2)
+    db: Session = Depends(get_db), token: str = Depends(reusable_oauth2), user_statuses = (STATUS_APPROVED, STATUS_CREATED, )
 ) -> UsersDBModel:
     try:
         payload = jwt.decode(
@@ -49,8 +54,13 @@ async def get_current_user(
         )
 
     user = await crud.user.get(db, id=token_data.user_id)
+    print(token_data.user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
+
+    if user.status not in user_statuses:
+        raise HTTPException(status_code=403, detail="Incorrect user status")
+
     return user
 
 

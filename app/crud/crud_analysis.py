@@ -32,7 +32,7 @@ class CRUDAnalysis(CRUDBase[AnalysisDBModel, AnalysisCreateModel, AnalysisCreate
                      ORDER BY an2.created_at DESC
                      LIMIT :limit
                      OFFSET :offset)
-                ORDER BY an.created_at;
+                ORDER BY an.created_at DESC;
             """
             ),
             {"user_id": user_id, "limit": req_data.limit, "offset": offset},

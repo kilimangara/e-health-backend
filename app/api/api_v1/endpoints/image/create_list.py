@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app import crud
-from app.api.deps import get_current_user, get_db
+from app.api.deps import get_current_user_is_approved, get_db
 from app.db.models.image import ImageBlobDBModel
 from app.db.models.user import UsersDBModel
 from app.schemas.image import CreateUrlsModel
@@ -17,7 +17,7 @@ router = APIRouter()
 @router.post("/createList")
 async def process_list(
     request_data: CreateUrlsModel,
-    current_user: UsersDBModel = Depends(get_current_user),
+    current_user: UsersDBModel = Depends(get_current_user_is_approved),
     db: Session = Depends(get_db),
 ):
     data_to_insert = process_request(current_user.id, request_data)
