@@ -1,11 +1,15 @@
-FROM python:3.6
-RUN usermod -a -G sudo root
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8
+WORKDIR /app/
 
-RUN pip install pipenv
+#RUN pip install pipenv sqlalchemy python-dotenv psycopg2-binary python-jose email-validator requests
 
-RUN mkdir /code
-WORKDIR /code
-COPY Pipfile /code/Pipfile
-COPY Pipfile.lock /code/Pipfile.lock
-RUN pipenv install
-COPY . /code
+RUN apt-get update -qq \
+  && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    postgresql-client
+
+COPY requirements.txt /app/requirements.txt
+RUN pip install -r requirements.txt
+
+COPY . /app

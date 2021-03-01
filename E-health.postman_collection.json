@@ -1,0 +1,268 @@
+{
+	"info": {
+		"_postman_id": "a39d61f1-2f81-42ee-ae79-42fff0e600fc",
+		"name": "E-health",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "localhost:3001/login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phone\": \"79164598151\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3001/login/access-token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sms_code\": \"123456\",\n    \"jwt_auth_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJzbXNfY29kZSI6IjEyMzQ1NiIsInBob25lIjoiNzkxNjQ1OTgxNTEiLCJ0eXBlIjoiYXV0aF90b2tlbiJ9.pKuOKg3EtIXlVJSWXx4wyctVxY-3qPAxjt6MbiuJ1r4\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/login/access-token",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"login",
+								"access-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3001/refresh_token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDM3Mjc2NTEsInVzZXJfaWQiOiIxIiwidHlwZSI6InJlZnJlc2hfdG9rZW4ifQ.zD7nkC20LGIdALYbuLdNdVD-lFKq4rFyihlJcO-fZcI\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/refresh_token",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"refresh_token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3001/test_route",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTg1NDM2NTEsInVzZXJfaWQiOiIxIiwidHlwZSI6ImFjY2Vzc190b2tlbiJ9.MKiSDg5lHydpfcE-pX-57wrhfhBkrRanDk35qgtMHns",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3001/test_route",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"test_route"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "localhost:3001/user/update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTg5ODAwMzIsInVzZXJfaWQiOiIxIiwidHlwZSI6ImFjY2Vzc190b2tlbiJ9.w7Il1uyC9OJgJgIsadywmpuTSTKAouE8HAGFo3sdvgQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"last_name\": \"Згьятт\",\n    \"blood_type\": \"4+\",\n    \"name\": \"Давидэ\",\n    \"birth_date\": \"01.04.1997\",\n    \"weight\": 97,\n    \"height\": 187\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/user/update",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3001/user/get",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTg5ODAwMzIsInVzZXJfaWQiOiIxIiwidHlwZSI6ImFjY2Vzc190b2tlbiJ9.w7Il1uyC9OJgJgIsadywmpuTSTKAouE8HAGFo3sdvgQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/user/get",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user",
+								"get"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "allergies",
+			"item": [
+				{
+					"name": "localhost:3001/allergia/create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTg5ODI2MzAsInVzZXJfaWQiOiIxIiwidHlwZSI6ImFjY2Vzc190b2tlbiJ9.O2e2qPQghee6MRY3is2wAJZ1OFU8tMPeTKhU3V5cxjQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reaction\": \"встает член\",\n    \"allergen\": \"голая телка\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/allergia/create",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"allergia",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3001/allergia/getByUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTg5ODI2MzAsInVzZXJfaWQiOiIxIiwidHlwZSI6ImFjY2Vzc190b2tlbiJ9.O2e2qPQghee6MRY3is2wAJZ1OFU8tMPeTKhU3V5cxjQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/allergia/getByUser",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"allergia",
+								"getByUser"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
